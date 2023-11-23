@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Eli Bautista">
+    <meta name="keywords" content="food, facts, nutrition, open food facts, Eli Bautista">
+    <meta name="description" content="Explore food/product information with Food Facts, powered by the Open Food Facts API. Created by Eli Bautista.">
+    <title>Food Facts</title>
+    <link rel="shortcut icon" href="src/assets/icons/icon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="src/assets/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-black">
+        <div class="container-xxl">
+            <a href="#intro" class="navbar-brand">
+                <span class="fw-bold text-white">
+                    Food Facts <i class="fa-solid fa-clipboard-check" style="color: #ffffff;"></i>
+                </span>
+            </a>
+            <button class="navbar-toggler border-0" id="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars" id="navbar-toggler-label" style="color: #ffffff;"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="https://ph.openfoodfacts.org/discover" target="_blank"
+                            class="nav-link text-white text-start"><small>Discover</small></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://ph.openfoodfacts.org/contribute" target="_blank"
+                            class="nav-link text-white text-start"><small>Contribute</small></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://openfoodfacts.github.io/openfoodfacts-server/api/" target="_blank"
+                            class="nav-link text-white text-start"><small>API Documentation</small></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.eligiobautista.site/src/pages/contact.html" target="_blank"
+                            class="nav-link text-white text-start"><small>Contact
+                                Dev</small></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="mb-5">
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <h2 class="text-center my-5" id="tagline">From Trivia to Taste: Dive into Food Facts Today</h2>
+                <div class="col-lg-6">
+                    <form>
+                        <div class="mb-4 input-group shadow">
+                            <span class="input-group-text rounded-0"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="searchInput"
+                                placeholder="Search food for details">
+                            <button class="btn btn-sm btn-dark rounded-0">Search</button>
+                        </div>
+                        <div class="mb-4 input-group shadow">
+                            <span class="input-group-text rounded-0"><i class="fa-solid fa-cubes-stacked"
+                                    style="color: #000000;"></i></span>
+                            <select class="form-select" id="categoriesDropDown" onchange="performCategorySearch()">
+                                <option value="dairy">Select category</option>
+                                <option value="dairy">Dairy</option>
+                                <option value="protein">Protein</option>
+                                <option value="fruits">Fruits</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="grains">Grains</option>
+                            </select>
+                            <span class="input-group-text rounded-0">
+                                <span class="tt" data-bs-placement="right"
+                                    title="Select a category of product/s to show.">
+                                    <i class="bi bi-question-circle text-muted"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="products-container" class="row justify-content-center mx-auto"></div>
+        </div>
+    </main>
+    <footer class="text-center bg-body-tertiary mt-auto" style="background-color: #000 !important;">
+        <div class="container pt-2">
+            <section class="mb-2">
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1"
+                    href="https://www.facebook.com/elirbautista" target="_blank" role="button"
+                    data-mdb-ripple-color="dark"><i class="fa-brands fa-square-facebook"
+                        style="color: #ffffff;"></i></a>
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1"
+                    href="https://www.instagram.com/gionapagod_/" target="_blank" role="button"
+                    data-mdb-ripple-color="dark"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i></a>
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1"
+                    href="https://www.linkedin.com/in/eligio-bautista-iii-50473127b" target="_blank" role="button"
+                    data-mdb-ripple-color="dark"><i class="fa-brands fa-linkedin" style="color: #ffffff;"></i></a>
+                <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1"
+                    href="https://github.com/eligiorbautista" target="_blank" role="button"
+                    data-mdb-ripple-color="dark"><i class="fa-brands fa-github-square" style="color: #ffffff;"></i></a>
+            </section>
+        </div>
+        <div class="footer-text text-center p-3 bg-black text-white" style="font-size: 1rem;">
+            © 2020 Copyright by
+            <a class="text-body text-decoration-none" href="#" style="color: white !important; font-size: 1rem;">Eli
+                Bautista</a>
+        </div>
+    </footer>
+    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Food Facts Says</h5>
+                    <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>No result/s found.</p>
+                </div>
+                <div class="modal-footer">
+                    <p class="small">Website created by Eli Bautista<br>Powered by <b>Open Food Facts API</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newModalLabel">Welcome to Food Facts</h5>
+                    <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-start">Created by Eli Bautista, this website is your gateway to a world of
+                        food information.</p>
+                </div>
+                <div class="modal-footer text-center">
+                    <p class="small">Powered by <b>Open Food Facts API</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Food Facts Says</h5>
+                    <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-black">
+                    Right-click functionality on this page
+                    is disabled to protect my copyrighted content.<br><br>For content access or queries, contact me at
+                    it.elibautista@gmail.com.<br><br>Thank you for understanding.<br><br>Best,
+                    <br>Eli Bautista
+                </div>
+                <div class="modal-footer">
+                    <p class="small">Website created by Eli Bautista<br>Powered by <b>Open Food Facts API</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="maintenanceModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="maintenanceModalLabel">Food Facts</h5>
+                    <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-start">Open Food Facts API is under maintenance.<br>Please try again later.</p>
+                </div>
+                <div class="modal-footer">
+                    <p class="small">Website created by Eli Bautista<br>Powered by <b>Open Food Facts API</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="backToTopButton" onclick="backToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+    <script>
+        function backToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        window.onscroll = function () {
+            var backToTopButton = document.getElementById('backToTopButton');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        };
+    </script>
+    <script src="src/assets/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
