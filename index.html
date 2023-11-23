@@ -8,31 +8,49 @@
     <meta name="keywords" content="food, facts, nutrition, open food facts, Eli Bautista">
     <meta name="description" content="Explore food/product information with Food Facts, powered by the Open Food Facts API. Created by Eli Bautista.">
     <title>Food Facts</title>
+
+    <!-- Favicon -->
     <link rel="shortcut icon" href="src/assets/icons/icon.ico" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="src/assets/css/style.css">
 </head>
 
 <body>
+
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-black">
         <div class="container-xxl">
+            <!-- Brand Logo and Name -->
             <a href="#intro" class="navbar-brand">
                 <span class="fw-bold text-white">
                     Food Facts <i class="fa-solid fa-clipboard-check" style="color: #ffffff;"></i>
                 </span>
             </a>
+
+            <!-- Toggle button for mobile nav -->
             <button class="navbar-toggler border-0" id="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <i class="fa-solid fa-bars" id="navbar-toggler-label" style="color: #ffffff;"></i>
             </button>
+
+            <!-- Navbar links and search form -->
             <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
                 <ul class="navbar-nav">
+                    <!-- Navigation Links -->
                     <li class="nav-item">
                         <a href="https://ph.openfoodfacts.org/discover" target="_blank"
                             class="nav-link text-white text-start"><small>Discover</small></a>
@@ -54,19 +72,27 @@
             </div>
         </div>
     </nav>
+
+    <!-- Main Content -->
     <main class="mb-5">
         <div class="container">
             <div class="row justify-content-center mt-5">
+                <!-- Search Form -->
                 <h2 class="text-center my-5" id="tagline">From Trivia to Taste: Dive into Food Facts Today</h2>
                 <div class="col-lg-6">
                     <form>
+
+                        <!-- Search Input -->
                         <div class="mb-4 input-group shadow">
                             <span class="input-group-text rounded-0"><i class="bi bi-search"></i></span>
                             <input type="text" class="form-control" id="searchInput"
                                 placeholder="Search food for details">
                             <button class="btn btn-sm btn-dark rounded-0">Search</button>
                         </div>
+
+                        <!-- Dropdown -->
                         <div class="mb-4 input-group shadow">
+                            <!-- input-group -->
                             <span class="input-group-text rounded-0"><i class="fa-solid fa-cubes-stacked"
                                     style="color: #000000;"></i></span>
                             <select class="form-select" id="categoriesDropDown" onchange="performCategorySearch()">
@@ -78,6 +104,7 @@
                                 <option value="grains">Grains</option>
                             </select>
                             <span class="input-group-text rounded-0">
+                                <!-- tooltip -->
                                 <span class="tt" data-bs-placement="right"
                                     title="Select a category of product/s to show.">
                                     <i class="bi bi-question-circle text-muted"></i>
@@ -87,11 +114,16 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Container for products -->
             <div id="products-container" class="row justify-content-center mx-auto"></div>
         </div>
     </main>
+
+    <!-- Footer -->
     <footer class="text-center bg-body-tertiary mt-auto" style="background-color: #000 !important;">
         <div class="container pt-2">
+            <!-- Social Media Icons -->
             <section class="mb-2">
                 <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1"
                     href="https://www.facebook.com/elirbautista" target="_blank" role="button"
@@ -108,12 +140,16 @@
                     data-mdb-ripple-color="dark"><i class="fa-brands fa-github-square" style="color: #ffffff;"></i></a>
             </section>
         </div>
+
+        <!-- Copyright -->
         <div class="footer-text text-center p-3 bg-black text-white" style="font-size: 1rem;">
             © 2020 Copyright by
             <a class="text-body text-decoration-none" href="#" style="color: white !important; font-size: 1rem;">Eli
                 Bautista</a>
         </div>
     </footer>
+
+    <!-- Result Modal -->
     <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -132,6 +168,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Welcome Modal -->
     <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -151,6 +189,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Notice Modal -->
     <div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -172,6 +212,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Maintenance Modal -->
     <div class="modal fade" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="maintenanceModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -190,11 +232,17 @@
             </div>
         </div>
     </div>
+
+    <!-- Back To Top Button -->
     <button id="backToTopButton" onclick="backToTop()"><i class="fa-solid fa-chevron-up"></i></button>
+
     <script>
+        // Function to scroll to the top of the page
         function backToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Show/hide the scroll to top button based on scroll position
         window.onscroll = function () {
             var backToTopButton = document.getElementById('backToTopButton');
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -204,7 +252,11 @@
             }
         };
     </script>
+
+    <!-- Include the index.js file -->
     <script src="src/assets/js/index.js"></script>
+
+    <!-- Bootstrap Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>

@@ -40,19 +40,19 @@ document.addEventListener("DOMContentLoaded", function () {
     var newModal = new bootstrap.Modal(document.getElementById('newModal'));
     newModal.show();
 
-    // var noticeModal = new bootstrap.Modal(document.getElementById('noticeModal'));
-    // document.addEventListener("contextmenu", function (event) {
-    //     // Prevent right-click context menu
-    //     event.preventDefault();
-    //     noticeModal.show();
-    // });
+    var noticeModal = new bootstrap.Modal(document.getElementById('noticeModal'));
+    document.addEventListener("contextmenu", function (event) {
+        // Prevent right-click context menu
+        event.preventDefault();
+        noticeModal.show();
+    });
 
-    // // Disable specific key combinations
-    // document.onkeydown = function (e) {
-    //     if ((e.keyCode == 123) || (e.ctrlKey && e.shiftKey && [73, 74].includes(e.keyCode)) || (e.ctrlKey && e.keyCode == 85)) {
-    //         return false;
-    //     }
-    // };
+    // Disable specific key combinations
+    document.onkeydown = function (e) {
+        if ((e.keyCode == 123) || (e.ctrlKey && e.shiftKey && [73, 74].includes(e.keyCode)) || (e.ctrlKey && e.keyCode == 85)) {
+            return false;
+        }
+    };
 });
 
 // Function to perform search based on input
@@ -165,3 +165,19 @@ function removeEnPrefix(str) {
     }
     return str;
 }
+
+
+// Function to scroll to the top of the page
+function backToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Show/hide the scroll to top button based on scroll position
+window.onscroll = function () {
+    var backToTopButton = document.getElementById('backToTopButton');
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        backToTopButton.style.display = 'block';
+    } else {
+        backToTopButton.style.display = 'none';
+    }
+};
