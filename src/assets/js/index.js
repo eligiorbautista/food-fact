@@ -3,10 +3,12 @@ const tagline = document.getElementById('tagline');
 const navbarToggler = document.querySelector(".navbar-toggler");
 const icon = document.getElementById("navbar-toggler-label");
 const screenWidth = window.innerWidth;
+let groupResult = 1;
+let moreResultsAvailable = true; // Flag to track if more results are available
 
 // Event listener for when the page is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-    // Check screen size and adjust tagline margin
+    // Adjust tagline margin based on screen size
     tagline.style.setProperty("margin-top", screenWidth < 480 ? "6vh" : "13vh", "important");
 
     // Event listener for dropdown selection change
@@ -36,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Show maintenance modal and notice modal on page load
+    // Show notice modal and notice modal on page load
     var newModal = new bootstrap.Modal(document.getElementById('newModal'));
     newModal.show();
 
@@ -55,22 +57,32 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 
-// Function to perform search based on input
+// Function to load more results
+function loadMoreResults() {
+    groupResult++; // Increment the page number
+    performSearch();
+}
+
+// Function to perform search based on input and page
 function performSearch() {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         const searchTerm = searchInput.value;
-        // Fetch data from Open Food Facts API based on search term
-        fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&json=1`)
+
+        // Fetch data from Open Food Facts API based on search term and page
+        fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&json=1&page=${groupResult}`)
             .then(response => response.json())
-            .then(data => updateProductCard(data.products))
-            .catch(error => {
-                // Log and display an error message
-                console.error(`Error: ${error}`);
-                var maintenanceModal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
-                maintenanceModal.show();
-                console.error('Failed to fetch data from Open Food Facts API. Please try again later.', error);
-            });
+            .then(data => {
+                // Check if there are more results
+                moreResultsAvailable = data.products.length > 0;
+
+                // Update the product cards
+                updateProductCard(data.products);
+
+                // Show or hide the "Show More" button based on results
+                toggleShowMoreButton();
+            })
+            .catch(handleError);
     }
 }
 
@@ -81,22 +93,27 @@ function performCategorySearch() {
     tagline.style.setProperty("margin-top", screenWidth < 480 ? "6vh" : "13vh", "important");
 
     // Fetch data from Open Food Facts API based on selected category
-    const selectedCategory = document.getElementById('categoriesDropDown');
-    if (selectedCategory) {
+    const category = document.getElementById('categoriesDropDown');
+    if (category) {
         // Hide tagline and display product cards
         tagline.style.display = 'none';
         tagline.style.removeProperty('margin-top');
-        const searchTerm = selectedCategory.value;
-        fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&json=1`)
+        const selectedCategory = category.value;
+
+        // Fetch data from Open Food Facts API based on category and page
+        fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${selectedCategory}&json=1&page=${groupResult}`)
             .then(response => response.json())
-            .then(data => updateProductCard(data.products))
-            .catch(error => {
-                // Log and display an error message
-                console.error(`Error: ${error}`);
-                var maintenanceModal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
-                maintenanceModal.show();
-                console.error('Failed to fetch data from Open Food Facts API. Please try again later.', error);
-            });
+            .then(data => {
+                // Check if there are more results
+                moreResultsAvailable = data.products.length > 0;
+
+                // Update the product cards
+                updateProductCard(data.products);
+
+                // Show or hide the "Show More" button based on results
+                toggleShowMoreButton();
+            })
+            .catch(handleError);
     }
 }
 
@@ -111,61 +128,88 @@ function updateProductCard(products) {
 
         if (products.length === 0) {
             // Show result modal and adjust tagline margin
-            var resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
-            resultModal.show();
-            tagline.style.display = 'block';
-            tagline.style.setProperty("margin-top", screenWidth < 480 ? "6vh" : "13vh", "important");
+            showResultModal();
         } else {
             // Hide tagline and display product cards
-            tagline.style.display = 'none';
-            tagline.style.removeProperty('margin-top');
+            hideTagline();
 
             // Iterate through each product and create a card
             products.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'col-sm g-5';
-                card.innerHTML = `
-                    <div class="card mx-auto shadow" style="width: 18rem;">
-                        <div class="card-header text-center text-dark fw-bold">${capitalize(removeEnPrefix(product.name_en) || removeEnPrefix(product.product_name) || 'No product name to show.')}</div>
-                        <a href="${product.image_url || 'https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg'}" target="_blank">
-                            <img class="card-img-top img-fluid" src="${product.image_url || 'https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg'}" alt="${capitalize(removeEnPrefix(product.product_name) || 'No alt value')}">
-                        </a>
-                        <div class="card-body">
-                            <div class="card-text">
-                                <p><strong><b>Brand:</b></strong> ${capitalize(removeEnPrefix(product.brands)) || 'No data found.'}</p>
-                                
-                                <p><strong><b>Categories:</b></strong> ${capitalize(removeEnPrefix(product.categories)) || 'No data found.'}</p>
- 
-                                <p><strong><b>Origin:</b></strong> ${capitalize(removeEnPrefix(product.origin)) || 'No data found.'}</p>
-
-                                <p><strong><b>Available in:</b></strong> ${capitalize(removeEnPrefix(product.countries)) || 'No data found.'}</p>
-                                <hr>
-                                <p><small><strong><b>Ingredients:</b></strong> ${capitalize(removeEnPrefix(product.ingredients_text)) || 'No data found.'}</small></p>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                const card = createProductCard(product);
                 productsContainer.appendChild(card);
             });
         }
     }
 }
 
+// Function to create a product card element
+function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'col-sm g-5';
+    card.innerHTML = `
+        <div class="card mx-auto shadow" style="width: 18rem;">
+            <div class="card-header text-center text-dark fw-bold">${capitalize(removeEnPrefix(product.name_en) || removeEnPrefix(product.product_name) || 'No product name to show.')}</div>
+            <a href="${product.image_url || 'https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg'}" target="_blank">
+                <img class="card-img-top img-fluid" src="${product.image_url || 'https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg'}" alt="${capitalize(removeEnPrefix(product.product_name) || 'No alt value')}">
+            </a>
+            <div class="card-body">
+                <div class="card-text">
+                    <p><strong><b>Brand:</b></strong> ${capitalize(removeEnPrefix(product.brands)) || 'No data found.'}</p>
+                    
+                    <p><strong><b>Categories:</b></strong> ${capitalize(removeEnPrefix(product.categories)) || 'No data found.'}</p>
+
+                    <p><strong><b>Origin:</b></strong> ${capitalize(removeEnPrefix(product.origin)) || 'No data found.'}</p>
+
+                    <p><strong><b>Available in:</b></strong> ${capitalize(removeEnPrefix(product.countries)) || 'No data found.'}</p>
+                    <hr>
+                    <p><small><strong><b>Ingredients:</b></strong> ${capitalize(removeEnPrefix(product.ingredients_text)) || 'No data found.'}</small></p>
+                </div>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+// Function to show or hide the "Show More" button based on results
+function toggleShowMoreButton() {
+    const showMoreButton = document.getElementById('showMoreButton');
+    if (showMoreButton) {
+        showMoreButton.style.display = moreResultsAvailable ? 'block' : 'none';
+    }
+}
+
+// Function to show the result modal and adjust tagline margin
+function showResultModal() {
+    var resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+    resultModal.show();
+    tagline.style.display = 'block';
+    tagline.style.setProperty("margin-top", screenWidth < 480 ? "6vh" : "13vh", "important");
+}
+
+// Function to hide the tagline
+function hideTagline() {
+    tagline.style.display = 'none';
+    tagline.style.removeProperty('margin-top');
+}
+
 // Function to capitalize the first letter of a string
 function capitalize(str) {
-    if (typeof str === 'string') {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+    return typeof str === 'string' ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 }
 
 // Function to remove "En:" prefix
 function removeEnPrefix(str) {
-    if (typeof str === 'string') {
-        return str.replace(/^En:/i, '').trim();
-    }
-    return str;
+    return typeof str === 'string' ? str.replace(/^En:/i, '').trim() : str;
 }
 
+// Function to handle errors
+function handleError(error) {
+    // Log and display an error message
+    console.error(`Error: ${error}`);
+    var maintenanceModal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
+    maintenanceModal.show();
+    console.error('Failed to fetch data from Open Food Facts API. Please try again later.', error);
+}
 
 // Function to scroll to the top of the page
 function backToTop() {

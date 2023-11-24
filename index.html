@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Eli Bautista">
     <meta name="keywords" content="food, facts, nutrition, open food facts, Eli Bautista">
-    <meta name="description" content="Explore food/product information with Food Facts, powered by the Open Food Facts API. Created by Eli Bautista.">
+    <meta name="description"
+        content="Explore food/product information with Food Facts, powered by the Open Food Facts API. Created by Eli Bautista.">
     <title>Food Facts</title>
 
     <!-- Favicon -->
@@ -118,8 +119,12 @@
             <!-- Container for products -->
             <div id="products-container" class="row justify-content-center mx-auto"></div>
         </div>
-    </main>
 
+    </main>
+    <!-- See More Button -->
+    <div class="text-center my-4">
+        <button class="btn btn-dark btn-sm rounded-0 shadow" id="showMoreButton" onclick="loadMoreResults()">Show more</button>
+    </div>
     <!-- Footer -->
     <footer class="text-center bg-body-tertiary mt-auto" style="background-color: #000 !important;">
         <div class="container pt-2">
@@ -143,7 +148,7 @@
 
         <!-- Copyright -->
         <div class="footer-text text-center p-3 bg-black text-white" style="font-size: 1rem;">
-            © 2020 Copyright by
+            © 2023 Copyright by
             <a class="text-body text-decoration-none" href="#" style="color: white !important; font-size: 1rem;">Eli
                 Bautista</a>
         </div>
@@ -182,6 +187,7 @@
                 <div class="modal-body">
                     <p class="text-start">Created by Eli Bautista, this website is your gateway to a world of
                         food information.</p>
+                    <p class="fw-light"><small>Note: The information provided may not be exhaustive or completely accurate. Open Food Facts relies on user contributions, and some data might be missing or outdated. Use this information as a general reference and verify details independently for critical purposes.</small></p>
                 </div>
                 <div class="modal-footer text-center">
                     <p class="small">Powered by <b>Open Food Facts API</b></p>
@@ -233,25 +239,9 @@
         </div>
     </div>
 
+
     <!-- Back To Top Button -->
     <button id="backToTopButton" onclick="backToTop()"><i class="fa-solid fa-chevron-up"></i></button>
-
-    <script>
-        // Function to scroll to the top of the page
-        function backToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Show/hide the scroll to top button based on scroll position
-        window.onscroll = function () {
-            var backToTopButton = document.getElementById('backToTopButton');
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                backToTopButton.style.display = 'block';
-            } else {
-                backToTopButton.style.display = 'none';
-            }
-        };
-    </script>
 
     <!-- Include the index.js file -->
     <script src="src/assets/js/index.js"></script>

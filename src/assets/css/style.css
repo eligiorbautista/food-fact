@@ -71,9 +71,14 @@ main {
     transition: background-color 0.3s ease-in-out;
     border-radius: 50%;
 }
-
+ 
 #backToTopButton:hover {
     background-color: #000000e7;
+}
+
+#showMoreButton {
+    display: none;
+    margin: 0 auto;
 }
 
 @media (max-width:480px) {
