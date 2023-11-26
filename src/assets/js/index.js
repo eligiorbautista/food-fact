@@ -148,7 +148,7 @@ function createProductCard(product) {
     card.className = 'col-sm g-5';
     card.innerHTML = `
         <div class="card mx-auto shadow" style="width: 18rem;">
-            <div class="card-header text-center text-dark fw-bold">${capitalize(removeEnPrefix(product.name_en) || removeEnPrefix(product.product_name) || 'No product name to show.')}</div>
+            <div class="card-header text-center text-dark fw-bold">${capitalize(removeEnPrefix(product.product_name) || removeEnPrefix(product.product_name) || 'No product name to show.')}</div>
             <a href="${product.image_url || 'https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg'}" target="_blank">
                 <img class="card-img-top img-fluid" src="${product.image_url || 'https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg'}" alt="${capitalize(removeEnPrefix(product.product_name) || 'No alt value')}">
             </a>
@@ -157,8 +157,6 @@ function createProductCard(product) {
                     <p><strong><b>Brand:</b></strong> ${capitalize(removeEnPrefix(product.brands)) || 'No data found.'}</p>
                     
                     <p><strong><b>Categories:</b></strong> ${capitalize(removeEnPrefix(product.categories)) || 'No data found.'}</p>
-
-                    <p><strong><b>Origin:</b></strong> ${capitalize(removeEnPrefix(product.origin)) || 'No data found.'}</p>
 
                     <p><strong><b>Available in:</b></strong> ${capitalize(removeEnPrefix(product.countries)) || 'No data found.'}</p>
                     <hr>
