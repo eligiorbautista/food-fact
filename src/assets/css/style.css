@@ -1,12 +1,12 @@
+/* Importing Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Mulish:wght@400;500&family=Open+Sans:wght@300;400;500;600&family=Poppins:wght@100;200;300;400;500;600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Mulish:wght@400;500&family=Open+Sans:wght@300;400;500;600&family=Poppins:wght@100;200;300;400;500;600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+/* Setting default font for all elements */
 * {
     font-family: 'Roboto', sans-serif;
 }
 
-/* Styling for removing navbar hamburger border */
+/* Removing outline and box-shadow for navbar toggler */
 .navbar-toggler:focus,
 .navbar-toggler:active,
 .navbar-toggler-icon:focus {
@@ -15,34 +15,39 @@
     border-color: white;
 }
 
+/* Styling for tagline */
 #tagline {
     font-family: 'Poppins', sans-serif !important;
     font-weight: bold;
     font-size: 2.8rem;
 }
 
+/* Setting up flex container for body */
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+/* Styling for main content area */
 main {
     flex: 1;
 }
 
-/* Styling for search form and card */
+/* Styling for search form */
 .search-form {
     width: 40%;
     margin: 0 auto;
     border: none;
 }
 
+/* Styling for card container */
 .card {
     width: 30%;
     height: 100%;
 }
 
+/* Styling for card image */
 .card img {
     width: 100%;
     height: 200px;
@@ -52,6 +57,7 @@ main {
     border-radius: 0;
 }
 
+/* Styling for card text */
 .card p {
     font-size: 1rem;
     margin: 0 0 5px 0;
@@ -72,16 +78,18 @@ main {
     transition: background-color 0.3s ease-in-out;
     border-radius: 50%;
 }
- 
+
 #backToTopButton:hover {
     background-color: #000000e7;
 }
 
+/* Styling for "Show More" button */
 #showMoreButton {
     display: none;
     margin: 0 auto;
 }
 
+/* Responsive styling for small screens */
 @media (max-width:480px) {
     .card p {
         font-size: 0.9rem;
